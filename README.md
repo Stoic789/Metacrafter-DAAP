@@ -1,4 +1,6 @@
-# Metacrafter-DAAP
+Metacrafter-DAAP
+================
+
 ===========================
 
 Assessment Contract
@@ -9,31 +11,23 @@ This Solidity contract implements an assessment contract that allows users to ad
 ### Contract Variables
 
 -   `owner`: The address of the contract owner (deployer).
--   `balance`: The total balance of the contract.
--   `balances`: A mapping that stores the balance of each address.
 
 ### Events
 
--   `AmountTransferred`: Triggered when an amount is transferred from one address to another.
 -   `NewPersonAdded`: Triggered when a new person is added to the contract.
+-   `PaymentReceived`: Triggered when an amount is received as a payment.
 
 ### Constructor
 
-#### `constructor(uint initBalance) payable`
+#### `constructor() payable`
 
-Initializes the contract by setting the `owner` as the deployer of the contract and setting the initial `balance` to the `initBalance` value passed as a parameter.
+Initializes the contract by setting the `owner` as the deployer of the contract.
 
 ### Public Functions
 
-#### `getBalance()`
+#### `sendPayment()`
 
 solidityCopy code
-
-`function getBalance() public view returns (uint256)`
-
-Returns the current `balance` of the contract.
-
-#### `sendPayment()`
 
 solidityCopy code
 
@@ -41,15 +35,19 @@ solidityCopy code
 
 Allows the sender to make a payment to the contract. Requires that the payment amount is greater than zero. Updates the `balances` mapping for the sender's address and emits the `PaymentReceived` event.
 
-#### `addPerson(string memory name, uint age, uint favoriteNumber)`
+#### `addPerson(string memory name, uint age, string memory note)`
 
 solidityCopy code
 
-`function addPerson(string memory name, uint age, uint favoriteNumber) external`
+solidityCopy code
 
-Adds a new person to the contract by providing their `name`, `age`, and `favoriteNumber` as parameters. Requires that the name is not empty, age is greater than zero, and favoriteNumber is greater than zero. Updates the `people` mapping and adds the person's address to the `peopleAddresses` array. Emits the `NewPersonAdded` event.
+`function addPerson(string memory name, uint age, string memory note) external`
+
+Adds a new person to the contract by providing their `name`, `age`, and `note` as parameters. Requires that the name, age, and note are not empty. Updates the `people` mapping and adds the person's address to the `peopleAddresses` array. Emits the `NewPersonAdded` event.
 
 #### `getPeopleCount()`
+
+solidityCopy code
 
 solidityCopy code
 
@@ -61,9 +59,11 @@ Returns the total number of people in the `peopleAddresses` array.
 
 solidityCopy code
 
-`function getPersonByIndex(uint index) external view returns (string memory, uint, uint)`
+solidityCopy code
 
-Returns the details of a person at a specific index in the `peopleAddresses` array. Requires a valid index. Returns the person's `name`, `age`, and `favoriteNumber`.
+`function getPersonByIndex(uint index) external view returns (string memory, uint, string memory)`
+
+Returns the details of a person at a specific index in the `peopleAddresses` array. Requires a valid index. Returns the person's `name`, `age`, and `note`.
 
 Running Procedure
 -----------------
@@ -78,25 +78,25 @@ bashCopy code
 
 1.  Install the dependencies:
 
-Copy code
+bashCopy code
 
 `npm install`
 
 1.  Start the local Ethereum node:
 
-Copy code
+bashCopy code
 
 `npx hardhat node`
 
 1.  Deploy the contract on the local network:
 
-arduinoCopy code
+bashCopy code
 
 `npm run scripts/deploys.js --network localhost`
 
 1.  Start the application:
 
-arduinoCopy code
+bashCopy code
 
 `npm run dev`
 
@@ -108,5 +108,4 @@ Tech Stack:
 -   [Next.js](https://nextjs.org/) - React framework for web development.
 -   [Solidity](https://docs.soliditylang.org/) - Programming language for Ethereum smart contracts.
 -   [MetaMask](https://metamask.io/) - Ethereum wallet and browser extension.
-
 
