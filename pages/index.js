@@ -13,7 +13,7 @@ export default function HomePage() {
   const [people, setPeople] = useState([]);
   const [name, setName] = useState("");
   const [age, setAge] = useState(0);
-  const [favoriteNumber, setFavoriteNumber] = useState(0);
+  const [note, setNote] = useState("");
   const [addPersonSuccess, setAddPersonSuccess] = useState(false);
   const [walletConnected, setWalletConnected] = useState(false); // Added missing state variable
 
@@ -92,14 +92,14 @@ export default function HomePage() {
   
 
   const addPerson = async () => {
-    if (!assessmentContract || !name || !age || !favoriteNumber) return;
+    if (!assessmentContract || !name || !age || !note) return;
 
     try {
-      await assessmentContract.addPerson(name, age, favoriteNumber);
+      await assessmentContract.addPerson(name, age, note);
       setAddPersonSuccess(true);
       setName("");
       setAge(0);
-      setFavoriteNumber(0);
+      setNote("");
     } catch (error) {
       console.error("Add person failed:", error);
     }
@@ -116,7 +116,7 @@ export default function HomePage() {
         peopleArr.push({
           name: person[0],
           age: person[1].toNumber(),
-          favoriteNumber: person[2].toNumber(),
+          note: person[2],
         });
       }
       setPeople(peopleArr);
@@ -135,7 +135,7 @@ export default function HomePage() {
 
   useEffect(() => {
     if (assessmentContract) {
-      getBalance();
+      
       getPeople();
     }
   }, [assessmentContract]);
@@ -194,11 +194,11 @@ export default function HomePage() {
               <input  type="text" id="amount" inputMode="numeric" pattern="[0-9]*"  onChange={(e) => setAge(e.target.value)} />
             </div>
             <div className="input-group">
-              <label htmlFor="favoriteNumber">Favorite Number:</label>
+              <label htmlFor="note">Message:</label>
               <input
-                 type="text" id="amount" inputMode="numeric" pattern="[0-9]*" 
-                value={favoriteNumber}
-                onChange={(e) => setFavoriteNumber(e.target.value)}
+                 type="text" id="amount"  
+                value={note}
+                onChange={(e) => setNote(e.target.value)}
               />
             </div>
             <button className="action-button" onClick={addPerson}>
@@ -219,7 +219,7 @@ export default function HomePage() {
                     <strong>Age:</strong> {person.age}
                   </p>
                   <p>
-                    <strong>Favorite Number:</strong> {person.favoriteNumber}
+                    <strong>Message:</strong> {person.note}
                   </p>
                 </li>
               ))}
